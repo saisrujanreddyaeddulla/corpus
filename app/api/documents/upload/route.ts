@@ -83,6 +83,7 @@ export async function POST(req: NextRequest) {
   } catch (err) {
     console.error("Document processing failed", err);
     await db.from("documents").update({ status: "error" }).eq("id", document.id);
-    return NextResponse.json({ error: "Processing failed" }, { status: 500 });
+    const message = err instanceof Error ? err.message : "Processing failed";
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
