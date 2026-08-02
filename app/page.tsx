@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FileText, Search, ShieldCheck, Zap } from "lucide-react";
+import { FileText, Search, ShieldCheck, Zap, CheckCircle2, XCircle } from "lucide-react";
 
 const FEATURES = [
   {
@@ -25,9 +25,12 @@ export default function LandingPage() {
       <nav className="max-w-6xl mx-auto px-6 py-6 flex items-center justify-between">
         <span className="font-display text-2xl text-paper">Corpus</span>
         <div className="flex items-center gap-3">
+          <Link href="/architecture" className="text-paper-dim text-sm hover:text-paper transition-colors">
+            How it works
+          </Link>
           <Link href="/about" className="text-paper-dim text-sm hover:text-paper transition-colors">
-  About
-</Link>
+            About
+          </Link>
           <Link href="/sign-in" className="text-paper-dim text-sm hover:text-paper transition-colors">
             Sign in
           </Link>
@@ -62,7 +65,6 @@ export default function LandingPage() {
         </Link>
         <p className="text-paper-faint text-xs mt-3 font-mono">No credit card required</p>
 
-        {/* Signature element: a sample answer with clickable citation chips */}
         <div className="mt-16 text-left bg-ink-card border border-white/10 rounded-lg p-6 max-w-xl mx-auto">
           <p className="text-paper-faint text-xs font-mono uppercase tracking-wide mb-3">Sample answer</p>
           <p className="text-paper leading-relaxed">
@@ -89,6 +91,43 @@ export default function LandingPage() {
               <p className="text-paper-dim text-sm leading-relaxed">{body}</p>
             </div>
           ))}
+        </div>
+      </section>
+
+      {/* Supported documents */}
+      <section className="max-w-5xl mx-auto px-6 pb-24">
+        <div className="text-center mb-10">
+          <h2 className="font-display text-3xl text-paper mb-3">What Corpus can read</h2>
+          <p className="text-paper-dim max-w-xl mx-auto">
+            Upload real files and Corpus indexes them for search. Here's exactly
+            what's supported today.
+          </p>
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+          <div className="border border-white/10 rounded-lg p-6">
+            <h3 className="font-display text-xl text-paper mb-4 flex items-center gap-2">
+              <CheckCircle2 size={18} className="text-teal-light" />
+              Supported
+            </h3>
+            <ul className="space-y-2 text-paper-dim text-sm">
+              <li>PDF (.pdf)</li>
+              <li>Word documents (.docx)</li>
+              <li>Plain text (.txt)</li>
+              <li>Markdown (.md)</li>
+            </ul>
+          </div>
+          <div className="border border-white/10 rounded-lg p-6">
+            <h3 className="font-display text-xl text-paper mb-4 flex items-center gap-2">
+              <XCircle size={18} style={{ color: "#C1502E" }} />
+              Not yet supported
+            </h3>
+            <ul className="space-y-2 text-paper-dim text-sm">
+              <li>Old Word format (.doc)</li>
+              <li>Scanned PDFs or images with no real text (no OCR)</li>
+              <li>Excel, PowerPoint, images, or ZIP files</li>
+              <li>Links or web pages — files must be uploaded directly</li>
+            </ul>
+          </div>
         </div>
       </section>
 
@@ -119,12 +158,12 @@ export default function LandingPage() {
       </section>
 
       <footer className="max-w-6xl mx-auto px-6 py-8 border-t border-white/10 text-paper-faint text-xs font-mono">
-  Corpus — built by{" "}
-  <Link href="/about" className="text-gold-light hover:underline">
-    Sai Srujan Reddy A
-  </Link>{" "}
-  using Next.js, Claude, and Voyage AI.
-</footer>
+        Corpus — built by{" "}
+        <Link href="/about" className="text-gold-light hover:underline">
+          Sai Srujan Reddy A
+        </Link>{" "}
+        using Next.js, Claude, and Voyage AI.
+      </footer>
     </main>
   );
 }
