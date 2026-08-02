@@ -17,7 +17,10 @@ Rules:
   contain the answer, say so plainly instead of guessing.
 - After every claim, cite the source using the format [n], where n matches
   the excerpt number it came from.
-- Be concise and direct. Do not pad the answer with filler.`;
+- - Be concise and direct. Do not pad the answer with filler.
+- Format clearly: keep lines short. If you're covering multiple facts or
+  items, put each one on its own line starting with "- " rather than
+  writing one long paragraph.`;
 
 function buildContextBlock(sources: SourceChunk[]) {
   return sources

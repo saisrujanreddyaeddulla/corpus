@@ -6,18 +6,43 @@ import { Send, Loader2 } from "lucide-react";
 type Citation = { index: number; documentName: string; pageNumber: number | null; snippet: string };
 type Message = { role: "user" | "assistant"; content: string; citations?: Citation[] };
 
-function renderWithCitations(text: string, citations: Citation[] | undefined, onCite: (c: Citation) => void) {
+function renderLineWithCitations(
+  text: string,
+  citations: Citation[] | undefined,
+  onCite: (c: Citation) => void,
+  keyPrefix: string
+) {
   if (!citations || citations.length === 0) return text;
   const parts = text.split(/(\[\d+\])/g);
   return parts.map((part, i) => {
     const match = part.match(/^\[(\d+)\]$/);
-    if (!match) return <span key={i}>{part}</span>;
+    if (!match) return <span key={`${keyPrefix}-${i}`}>{part}</span>;
     const citation = citations.find((c) => c.index === Number(match[1]));
-    if (!citation) return <span key={i}>{part}</span>;
+    if (!citation) return <span key={`${keyPrefix}-${i}`}>{part}</span>;
     return (
-      <button key={i} className="citation-chip" onClick={() => onCite(citation)}>
+      <button key={`${keyPrefix}-${i}`} className="citation-chip" onClick={() => onCite(citation)}>
         {match[1]}
       </button>
+    );
+  });
+}
+
+function renderMessageContent(
+  text: string,
+  citations: Citation[] | undefined,
+  onCite: (c: Citation) => void
+) {
+  const lines = text.split("\n").filter((line) => line.trim() !== "");
+  return lines.map((line, idx) => {
+    const trimmed = line.trim();
+    const isBullet = trimmed.startsWith("- ") || trimmed.startsWith("* ");
+    const content = isBullet ? trimmed.slice(2) : trimmed;
+    const marginClass = idx === lines.length - 1 ? "" : "mb-2";
+    return (
+      <div key={idx} className={`${isBullet ? "flex gap-2" : ""} ${marginClass}`}>
+        {isBullet && <span className="text-gold-light flex-shrink-0">•</span>}
+        <span>{renderLineWithCitations(content, citations, onCite, String(idx))}</span>
+      </div>
     );
   });
 }
@@ -93,7 +118,7 @@ export default function ChatWindow() {
               }`}
             >
               {msg.role === "assistant"
-                ? renderWithCitations(msg.content, msg.citations, setActiveCitation)
+                ? renderMessageContent(msg.content, msg.citations, setActiveCitation)
                 : msg.content}
               {msg.role === "assistant" && loading && i === messages.length - 1 && (
                 <Loader2 size={12} className="inline-block animate-spin ml-2 text-paper-faint" />
